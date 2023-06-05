@@ -3,6 +3,37 @@ let words;
 let wordList;
 let modelLoaded = false;
 
+
+var options = {
+    series: [{
+    data: [0, 0, 0, 0]
+  }],
+    chart: {
+    type: 'bar',
+    height: 350
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      horizontal: true,
+      distributed: true
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {
+    categories: ["Background Noise", "good", "talking","bad"],
+  },
+  yaxis: {
+    min: 0,
+    max: 1,
+  }
+  };
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+
+
 $( document ).ready(function() {
     wordList = ["Background Noise", "talking", "good", "bad"];
     $.each(wordList, function( index, word ) {
@@ -24,6 +55,12 @@ $("#audio-switch").change(function() {
         stopListening();
     }   
 });
+
+function DrawChart(scores) {
+    chart.updateSeries([{
+        data: [scores[0].score,scores[2].score,scores[1].score,scores[3].score]
+    }]);
+}
 
 async function loadModel(){
     $(".progress-bar").removeClass('d-none'); 
@@ -66,7 +103,7 @@ function startListening(recognizer){
         // scores contains the probability scores that correspond to recognizer.wordLabels().
         // Turn scores into a list of (score,word) pairs.
         scores = Array.from(scores).map((s, i) => ({score: s, word: words[i]}));
-        console.log(scores);
+        DrawChart(scores)
         // Find the most probable word.
         scores.sort((s1, s2) => s2.score - s1.score);
         $("#word-"+scores[0].word).addClass('candidate-word-active');
