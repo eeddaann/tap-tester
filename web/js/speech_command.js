@@ -105,7 +105,7 @@ async function loadModel(){
     // The two available options are `BROWSER_FFT` and `SOFT_FFT`.
     // - BROWSER_FFT uses the browser's native Fourier transform.
     // - SOFT_FFT uses JavaScript implementations of Fourier transform (not implemented yet).
-    const URL = 'http://127.0.1:8000/model/';
+    const URL = 'tap-tester.vercel.app/model/';
     const checkpointURL = URL + 'model.json'; // model topology
     const metadataURL = URL + 'metadata.json'; // model metadata
     const recognizer = speechCommands.create(
