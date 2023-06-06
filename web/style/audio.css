@@ -96,6 +96,20 @@
     transform: translate3d(2px, 2px, 0);
   }
   
+  .mt-2 {
+  display: none;
+  }
+
+  #status {
+    width: 100%;
+    height: 25%;
+    border-radius: 35px;
+    text-align: center;
+    font-size: 45;
+    opacity: 0.6;
+    padding: 20px 0;
+  }
+  
   .form-switch:active input:checked + i::after { transform: translate3d(16px, 2px, 0); }
   
   .form-switch input { display: none; }

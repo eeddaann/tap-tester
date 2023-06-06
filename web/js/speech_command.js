@@ -10,7 +10,20 @@ var options = {
   }],
     chart: {
     type: 'bar',
-    height: 350
+    height: 350,
+    animations: {
+        enabled: true,
+        easing: 'easeinout',
+        speed: 800,
+        animateGradually: {
+            enabled: true,
+            delay: 50
+        },
+        dynamicAnimation: {
+            enabled: true,
+            speed: 50
+        }
+    }
   },
   plotOptions: {
     bar: {
@@ -58,8 +71,32 @@ $("#audio-switch").change(function() {
 
 function DrawChart(scores) {
     chart.updateSeries([{
-        data: [scores[0].score,scores[2].score,scores[1].score,scores[3].score]
+        data: [scores[0],scores[2],scores[1],scores[3]]
     }]);
+}
+
+function updateStatus(status) {
+    statusDiv = document.querySelector("#status")
+    switch (status) {
+        case "Background Noise":
+            statusDiv.style.backgroundColor = "white";
+            statusDiv.innerHTML = "";
+            break;
+        case "talking":
+            statusDiv.style.backgroundColor = "#feb019";
+            statusDiv.innerHTML = "shhh... please be quiet 🤫";
+            break;
+        case "good":
+            statusDiv.style.backgroundColor = "#00e396";
+            statusDiv.innerHTML = "Sounds good! 👍";
+            break;
+        case "bad":
+            statusDiv.style.backgroundColor = "#ff4560";
+            statusDiv.innerHTML = "Sounds suspicious! 🤨";
+            break;
+        default:
+            break;
+    }
 }
 
 async function loadModel(){
@@ -102,13 +139,13 @@ function startListening(recognizer){
     recognizer.listen(({scores}) => {
         // scores contains the probability scores that correspond to recognizer.wordLabels().
         // Turn scores into a list of (score,word) pairs.
-        scores = Array.from(scores).map((s, i) => ({score: s, word: words[i]}));
         DrawChart(scores)
+        scores = Array.from(scores).map((s, i) => ({score: s, word: words[i]}));
         // Find the most probable word.
         scores.sort((s1, s2) => s2.score - s1.score);
         $("#word-"+scores[0].word).addClass('candidate-word-active');
         setTimeout(() => {
-            $("#word-"+scores[0].word).removeClass('candidate-word-active');
+            $("#word-"+scores[0].word).removeClass('candidate-word-active');updateStatus(scores[0].word)
         }, 300);
     }, 
     {
