@@ -71,7 +71,7 @@ $("#audio-switch").change(function() {
 
 function DrawChart(scores) {
     chart.updateSeries([{
-        data: [scores[0],scores[2],scores[1],scores[3]]
+        data: [scores[0],scores[2],scores[3],scores[1]]
     }]);
 }
 
